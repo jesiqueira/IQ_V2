@@ -1,0 +1,2 @@
+1 - criar indicador de medias
+2 - criar padrões de entradas call/put

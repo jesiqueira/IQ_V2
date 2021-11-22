@@ -1,0 +1,6 @@
+=====Link API=====
+https://github.com/iqoptionapi/iqoptionapi
+
+=======instalar API IQ======
+python.exe .\setup.py install
+
