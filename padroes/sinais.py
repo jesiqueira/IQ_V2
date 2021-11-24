@@ -1,5 +1,5 @@
-from os import path
 from indicadores.indicadores import Indicadores
+from trader.trader import Trader
 
 
 class Sinais:
@@ -34,16 +34,41 @@ class Sinais:
         smaLenta = Indicador.sma(smaLenta)
         if candleAtual < smaRapida < smaLenta:
             # realizar venda ou PUT
+            trader = Trader(self.api)
             print('put')
+            print(candles[-2]['close'])
+            # print(candles)
+            print(f'Minima close: {self.minima(candles)}')
+            if candles[-2]['open'] > candles[-2]['close'] > candles[-1]['min'] < self.minima(candles):
+                status, id = trader.put(1, self.par, 1)
+                if status:
+                    resutado, lucro = self.api.check_win_v3(id)
+                    print(f'Resultado: {resutado}, lucro: {lucro}')
+
         elif candleAtual > smaRapida > smaLenta:
             # Realizar compra ou CALL
             # print(candles[-2])
+            trader = Trader(self.api)
+            print('call')
             print(candles[-2]['close'])
-            maior = []
-            for candle in candles[-50 : -2]:
-                maior.append(candle['close'])
-                # print(f"vela: {n}, maxima: {l['close']}")
-            ma = max(maior)
-            print(f'Max close: {ma}')
+            print(candles)
+            print(f'Max close: {self.maxima(candles)}')
+            if candles[-2]['open'] < candles[-2]['close'] < candles[-1]['max'] > self.maxima(candles):
+                status, id = trader.call(1, self.par, 1)
+                if status:
+                    resutado, lucro = self.api.check_win_v3(id)
+                    print(f'Resultado: {resutado}, lucro: {lucro}')
         else:
             print('Preço entre as médias')
+
+    def maxima(self, candles):
+        maxima = []
+        for candle in candles[: -1]:
+            maxima.append(candle['close'])
+        return max(maxima)
+
+    def minima(self, candles):
+        minima = []
+        for candle in candles[: -1]:
+            minima.append(candle['close'])
+        return min(minima)
