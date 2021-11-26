@@ -1,7 +1,7 @@
-from typing import Match
 from indicadores.indicadores import Indicadores
 from trader.trader import Trader
 from math import ceil
+from time import sleep
 
 
 class Sinais:
@@ -22,7 +22,7 @@ class Sinais:
         return self.api.get_candles(self.par, self.timeframe, qtdVelas, timeAtual)
         # print(candle[-2]['close'])
 
-    def entrada(self, candleAtual, timeAtual, smaRapida=9, smaLenta=34, qtdVelas=50):
+    def entrada(self, candleAtual, timeAtual, smaRapida=7, smaLenta=34, qtdVelas=20):
         '''
             Recebe os parametros e verifica se atende os padões de entrada;
             candleAtual -> Ultimo clandle;
@@ -38,30 +38,33 @@ class Sinais:
         if candleAtual < smaRapida:
             # realizar venda ou PUT
             trader = Trader(self.api)
-            print('put')
             # print(candles[-2]['close'])
             # print(candles)
             # print(f'Minima close: {self.minima(candles)}')
             # if candles[-2]['open'] > candles[-2]['close'] > candles[-1]['min'] < self.minima(candles):
-            if candles[-2]['open'] > candles[-2]['close'] > candles[-1]['min'] and self.tendenciaAlta(candles):
-                status, id = trader.put(1, self.par, 5)
+            if candles[-2]['open'] > candles[-2]['close'] and candles[-1]['open'] > candles[-1]['close'] and candles[-1]['open'] < smaRapida > candles[-1]['close'] and candles[-1]['min'] < self.minima(candles):
+                print('put')
+                status, id = trader.put(1, self.par, 3)
                 if status:
                     resutado, lucro = self.api.check_win_v3(id)
                     print(f'Resultado: {resutado}, lucro: {lucro}')
+                    sleep(60)
 
-        elif candleAtual > smaRapida > smaLenta:
+        elif candleAtual > smaRapida:
             # Realizar compra ou CALL
             # print(candles[-2])
             trader = Trader(self.api)
-            print('call')
             # print(candles[-2]['close'])
             # print(candles)
             # print(f'Max close: {self.maxima(candles)}')
-            if candles[-2]['open'] < candles[-2]['close'] < candles[-1]['max'] > self.maxima(candles):
-                status, id = trader.call(1, self.par, 5)
+            # if candles[-2]['open'] < candles[-2]['close'] < candles[-1]['max'] > self.maxima(candles):
+            if candles[-2]['open'] < candles[-2]['close'] and candles[-1]['open'] < candles[-1]['close'] and candles[-1]['open'] > smaRapida < candles[-1]['close'] and candles[-1]['max'] > self.maxima(candles):
+                print('call')
+                status, id = trader.call(1, self.par, 3)
                 if status:
                     resutado, lucro = self.api.check_win_v3(id)
                     print(f'Resultado: {resutado}, lucro: {lucro}')
+                    sleep(60)
         else:
             print('Preço entre as médias')
 

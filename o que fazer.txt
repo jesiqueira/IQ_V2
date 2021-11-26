@@ -4,3 +4,10 @@
 
 entrada para 5 minutos, candle anterior tem que ter a minima iniciada a baixo ou a cima 
 e a cor da vela tem que ser da cor do movimento também..
+
+*** - medir a quantidade de acerto e erros
+
+-----Proximos passos-----
+criar historico de acerto e erros
+calcular entradas baseadas no acerto e no erros
+
