@@ -1,2 +1,6 @@
 1 - criar indicador de medias
 2 - criar padrões de entradas call/put
+
+
+entrada para 5 minutos, candle anterior tem que ter a minima iniciada a baixo ou a cima 
+e a cor da vela tem que ser da cor do movimento também..

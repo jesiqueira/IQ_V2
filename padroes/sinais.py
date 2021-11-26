@@ -1,5 +1,7 @@
+from typing import Match
 from indicadores.indicadores import Indicadores
 from trader.trader import Trader
+from math import ceil
 
 
 class Sinais:
@@ -31,16 +33,18 @@ class Sinais:
         candles = self.candles(qtdVelas, timeAtual)
         Indicador = Indicadores(candles)
         smaRapida = Indicador.sma(smaRapida)
-        smaLenta = Indicador.sma(smaLenta)
-        if candleAtual < smaRapida < smaLenta:
+
+        # smaLenta = Indicador.sma(smaLenta)
+        if candleAtual < smaRapida:
             # realizar venda ou PUT
             trader = Trader(self.api)
             print('put')
-            print(candles[-2]['close'])
+            # print(candles[-2]['close'])
             # print(candles)
-            print(f'Minima close: {self.minima(candles)}')
-            if candles[-2]['open'] > candles[-2]['close'] > candles[-1]['min'] < self.minima(candles):
-                status, id = trader.put(1, self.par, 1)
+            # print(f'Minima close: {self.minima(candles)}')
+            # if candles[-2]['open'] > candles[-2]['close'] > candles[-1]['min'] < self.minima(candles):
+            if candles[-2]['open'] > candles[-2]['close'] > candles[-1]['min'] and self.tendenciaAlta(candles):
+                status, id = trader.put(1, self.par, 5)
                 if status:
                     resutado, lucro = self.api.check_win_v3(id)
                     print(f'Resultado: {resutado}, lucro: {lucro}')
@@ -50,11 +54,11 @@ class Sinais:
             # print(candles[-2])
             trader = Trader(self.api)
             print('call')
-            print(candles[-2]['close'])
-            print(candles)
-            print(f'Max close: {self.maxima(candles)}')
+            # print(candles[-2]['close'])
+            # print(candles)
+            # print(f'Max close: {self.maxima(candles)}')
             if candles[-2]['open'] < candles[-2]['close'] < candles[-1]['max'] > self.maxima(candles):
-                status, id = trader.call(1, self.par, 1)
+                status, id = trader.call(1, self.par, 5)
                 if status:
                     resutado, lucro = self.api.check_win_v3(id)
                     print(f'Resultado: {resutado}, lucro: {lucro}')
@@ -72,3 +76,20 @@ class Sinais:
         for candle in candles[: -1]:
             minima.append(candle['close'])
         return min(minima)
+
+    def barraElefante(self, candles):
+        _close = candles[-2]['close']
+        _open = candles[-2]['open']
+        print(f'close: {_close}')
+        print(f'open: {_open}')
+        tamanho = abs(candles[-2]['close'] - candles[-2]['open'])
+        print(f'tamanho: {tamanho}')
+        print(f'tamanho: {ceil(tamanho)}')
+
+    def tendenciaAlta(self, candles, sma):
+        if candles[-2]['open'] < candles[-2]['close'] and candles[-2]['min'] > sma < candles[-2]['close']:
+            return True
+
+    def tendenciaBaixa(elf, candles, sma):
+        if candles[-2]['open'] > candles[-2]['close'] and candles[-2]['min'] < sma > candles[-2]['close']:
+            return True
