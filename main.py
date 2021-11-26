@@ -10,8 +10,8 @@ import json
 # PRACTICE / REAL
 api = IQ_Option(Config.LOGIN, Config.PASSWORD, active_account_type='PRACTICE')
 
-# PAR = 'EURUSD-OTC'
-PAR = 'EURUSD'
+PAR = 'EURUSD-OTC'
+# PAR = 'EURUSD'
 ENTRADA = 'call'  # put/call
 TIMEFRAME = 60  # time em segunddo, 60 segundo igual 1 minuto
 

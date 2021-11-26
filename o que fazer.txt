@@ -2,10 +2,10 @@
 2 - criar padrões de entradas call/put
 
 
-entrada para 5 minutos, candle anterior tem que ter a minima iniciada a baixo ou a cima 
+entrada para 3 minutos, candle anterior tem que ter a minima iniciada a baixo ou a cima 
 e a cor da vela tem que ser da cor do movimento também..
 
-*** - medir a quantidade de acerto e erros
+*** - medir a quantidade de acerto e erros, testando com minima e maxima com 20 candle verificar se está bom ou se precisa baiar para 15 ou 17 candle
 
 -----Proximos passos-----
 criar historico de acerto e erros
