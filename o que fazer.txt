@@ -11,3 +11,10 @@ e a cor da vela tem que ser da cor do movimento também..
 criar historico de acerto e erros
 calcular entradas baseadas no acerto e no erros
 
+
+padrão 2 candle da mesma cor 1 da cor oposta, quando o candle voltar para cor do 2 candles  da tendencia
+realizar a compra
+
+++++++++++++++++++Teste Executando+++++++++++++++++++++++++++++
+Data: 27/11/2021
+Hora: 7h24min
