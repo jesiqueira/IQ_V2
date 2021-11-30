@@ -37,7 +37,7 @@ class Sinais:
         qtd_candle_p_max_min = 20
 
         # smaLenta = Indicador.sma(smaLenta)
-        if candleAtual < smaRapida <smaLenta:
+        if candleAtual < smaRapida < smaLenta:
             # realizar venda ou PUT
             trader = Trader(self.api)
             # print(f'Minima close: {self.minima(candles)}')
@@ -55,8 +55,8 @@ class Sinais:
                 sleep(7)
             # if candles[-2]['open'] > candles[-2]['close'] and candles[-1]['open'] > candles[-1]['close'] and candles[-1]['open'] < smaRapida > candles[-1]['close'] and candles[-1]['min'] < self.minima(candles):
             if candles[-3]['open'] > candles[-3]['close'] and candles[-2]['open'] > candles[-2]['close'] and candles[-1]['open'] < smaRapida \
-                and candles[-1]['close'] < self.minima(qtd_candle_p_max_min, timeAtual) and candleAtual < candles[-2]['close'] \
-                and candleAtual < self.minima(qtd_candle_p_max_min, timeAtual):
+                    and candles[-1]['close'] < self.minima(qtd_candle_p_max_min, timeAtual) and candleAtual < candles[-2]['close'] \
+                    and candleAtual < self.minima(qtd_candle_p_max_min, timeAtual):
                 print('Compra Efetuada')
                 status, id = trader.put(1, self.par, 3)
                 if status:
@@ -82,8 +82,8 @@ class Sinais:
                 sleep(7)
             # if candles[-2]['open'] < candles[-2]['close'] and candles[-1]['open'] < candles[-1]['close'] and candles[-1]['open'] > smaRapida < candles[-1]['close'] and candles[-1]['max'] > self.maxima(candles):
             if candles[-3]['open'] < candles[-3]['close'] and candles[-2]['open'] < candles[-2]['close'] and candles[-1]['open'] > smaRapida \
-                and candles[-1]['close'] > self.maxima(qtd_candle_p_max_min, timeAtual) and candleAtual > candles[-2]['close'] \
-                and candleAtual > self.maxima(qtd_candle_p_max_min, timeAtual):
+                    and candles[-1]['close'] > self.maxima(qtd_candle_p_max_min, timeAtual) and candleAtual > candles[-2]['close'] \
+                    and candleAtual > self.maxima(qtd_candle_p_max_min, timeAtual):
                 print('Compra Efetuada')
                 status, id = trader.call(1, self.par, 3)
                 if status:
@@ -97,17 +97,20 @@ class Sinais:
             # print(f'Open 1: {candles[-2]["open"]}')
             # print(f'close 1: {candles[-2]["close"]}')
 
+    def retornoSMA200(self):
+        pass
+
     def maxima(self, qtd_velas, time_atual):
         candles = self.candles(qtd_velas, time_atual)
         maxima = []
-        for candle in candles[ : -1]:
+        for candle in candles[: -1]:
             maxima.append(candle['close'])
         return max(maxima)
 
     def minima(self, qtd_velas, time_atual):
         candles = self.candles(qtd_velas, time_atual)
         minima = []
-        for candle in candles[ : -1]:
+        for candle in candles[: -1]:
             minima.append(candle['close'])
         return min(minima)
 
